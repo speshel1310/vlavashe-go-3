@@ -115,6 +115,55 @@ class Game {
         }
     }
 
+    copyToClipboard(text) {
+        // Попытка 1: Современный Clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(text)
+                .then(() => true)
+                .catch(err => {
+                    console.warn('Clipboard API failed, trying fallback...', err);
+                    return this.fallbackCopyToClipboard(text);
+                });
+        }
+        // Попытка 2: Fallback для iframe и старых браузеров
+        return Promise.resolve(this.fallbackCopyToClipboard(text));
+    }
+
+    fallbackCopyToClipboard(text) {
+        // Создаем временный textarea
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '-9999px';
+        textarea.style.opacity = '0';
+        textarea.setAttribute('readonly', '');
+
+        document.body.appendChild(textarea);
+
+        try {
+            // Выделяем текст
+            textarea.select();
+            textarea.setSelectionRange(0, text.length);
+
+            // Копируем через execCommand (работает в iframe)
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            if (successful) {
+                console.log('Text copied using fallback method');
+                return true;
+            } else {
+                console.error('Fallback copy failed');
+                return false;
+            }
+        } catch (err) {
+            console.error('Fallback copy error:', err);
+            document.body.removeChild(textarea);
+            return false;
+        }
+    }
+
     initializeElements() {
         this.player = document.getElementById('player');
         this.gameArea = document.querySelector('.game-area');
@@ -991,39 +1040,39 @@ class Game {
         promoElement.title = 'Нажмите, чтобы скопировать';
 
         promoElement.onclick = () => {
-            navigator.clipboard.writeText(promoCode).then(() => {
-                this.trackEvent('promo_code_copied', {
-                    promo_code: promoCode,
-                    score: this.score,
-                    device_type: this.isMobile ? 'mobile' : 'desktop',
-                    is_authorized: !!this.playerPhone
-                });
+            this.copyToClipboard(promoCode).then(success => {
+                if (success) {
+                    this.trackEvent('promo_code_copied', {
+                        promo_code: promoCode,
+                        score: this.score,
+                        device_type: this.isMobile ? 'mobile' : 'desktop',
+                        is_authorized: !!this.playerPhone
+                    });
 
-                if (gameOverPromoCopied) {
-                    gameOverPromoCopied.textContent = 'Промокод скопирован!';
-                    gameOverPromoCopied.style.color = '#4dff4d';
-                    gameOverPromoCopied.classList.remove('hidden');
-                    setTimeout(() => {
-                        gameOverPromoCopied.classList.add('hidden');
-                    }, 2000);
-                }
-            }).catch(err => {
-                console.error('Failed to copy promo code: ', err);
-
-                this.trackEvent('promo_code_copy_error', {
-                    device_type: this.isMobile ? 'mobile' : 'desktop',
-                    error: err.message
-                });
-
-                if (gameOverPromoCopied) {
-                    gameOverPromoCopied.textContent = 'Ошибка копирования';
-                    gameOverPromoCopied.style.color = 'red';
-                    gameOverPromoCopied.classList.remove('hidden');
-                    setTimeout(() => {
-                        gameOverPromoCopied.classList.add('hidden');
+                    if (gameOverPromoCopied) {
                         gameOverPromoCopied.textContent = 'Промокод скопирован!';
                         gameOverPromoCopied.style.color = '#4dff4d';
-                    }, 2000);
+                        gameOverPromoCopied.classList.remove('hidden');
+                        setTimeout(() => {
+                            gameOverPromoCopied.classList.add('hidden');
+                        }, 2000);
+                    }
+                } else {
+                    this.trackEvent('promo_code_copy_error', {
+                        device_type: this.isMobile ? 'mobile' : 'desktop',
+                        error: 'Copy failed'
+                    });
+
+                    if (gameOverPromoCopied) {
+                        gameOverPromoCopied.textContent = 'Ошибка копирования';
+                        gameOverPromoCopied.style.color = 'red';
+                        gameOverPromoCopied.classList.remove('hidden');
+                        setTimeout(() => {
+                            gameOverPromoCopied.classList.add('hidden');
+                            gameOverPromoCopied.textContent = 'Промокод скопирован!';
+                            gameOverPromoCopied.style.color = '#4dff4d';
+                        }, 2000);
+                    }
                 }
             });
         };
