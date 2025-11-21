@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,47 +8,55 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-    
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-       ym(102749320, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-       });
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(105435485, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/102749320" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/105435485" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
     <!-- /Yandex.Metrika counter -->
 </head>
+
 <body>
     <div id="auth-screen">
         <div class="auth-content">
             <h2>VLAVASHE</h2>
-            
+
             <div id="pending-score-auth-message" class="hidden">
                 <!-- Сообщение о набранных очках будет вставляться сюда из JS -->
             </div>
 
             <div class="game-rules">
                 <p>Правила игры:</p>
-                <p>Собери максимум шаурмы за 1 минуту. Топ-3 игрокам за месяц дарим 500 рублей на бонусный счет, а все участники получат промокод на скидку. Период акции - 1 месяц.</p>
+                <p>Собери максимум шаурмы за 1 минуту. Топ-3 игрокам за месяц дарим 500 рублей на бонусный счет, а все
+                    участники получат промокод на скидку. Период акции - 1 месяц.</p>
                 <p>Управление:</p>
                 <p>ПК: стрелочки (← → )</p>
                 <p>Смартфон: свайпы/кнопки</p>
                 <p>Играй сколько угодно — в зачет идет лучший результат. 🚀</p>
             </div>
-            
+
             <form id="auth-form">
                 <div class="form-group form-group-hidden">
                     <label for="player-phone">Ваш номер телефона:</label>
-                    <input type="tel" id="player-phone" name="player-phone" placeholder="+7" pattern="^(\+?7|8)[0-9]{10}$" title="Формат номера: 79999999999 или +79999999999" hidden disabled>
+                    <input type="tel" id="player-phone" name="player-phone" placeholder="+7"
+                        pattern="^(\+?7|8)[0-9]{10}$" title="Формат номера: 79999999999 или +79999999999" hidden
+                        disabled>
                 </div>
                 <button type="submit" id="start-game-btn" class="game-btn">Начать игру</button>
             </form>
@@ -60,11 +69,11 @@
             <div class="logo">VLAVASHE</div>
             <div class="timer">Время: <span id="timer">60</span>с</div>
         </div>
-        
+
         <div class="game-info">
             <div id="lives" class="lives-display">Жизни: <span class="lives-count">3</span></div>
         </div>
-        
+
         <div class="game-area">
             <div class="lane left"></div>
             <div class="lane center"></div>
@@ -89,7 +98,7 @@
                 <h2>GAME OVER</h2>
                 <p>Вы набрали: <span id="final-score">0</span> очков</p>
                 <p class="result-message"></p>
-                
+
                 <div id="game-over-promo-block" class="promo-code-block">
                     <p>Спасибо за игру, дарим вам промокод на следующий заказ:</p>
                     <div id="game-over-promo-list" class="promo-codes-list">
@@ -97,7 +106,7 @@
                     </div>
                     <p id="game-over-promo-copied" class="promo-copied-message hidden">Промокод скопирован!</p>
                 </div>
-                
+
                 <button id="play-again" class="game-btn">Играть снова</button>
                 <button id="show-leaderboard-from-gameover" class="game-btn">Таблица рекордов</button>
             </div>
@@ -115,4 +124,5 @@
     </div>
     <script src="game.js"></script>
 </body>
-</html> 
+
+</html>
