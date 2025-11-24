@@ -1,14 +1,11 @@
 const FALLBACK_PROMO_CODES = [
-    "GAME2",
-    "VLASHE10",
-    "SHOW20",
-    "PLAY30",
-    "VLAVASHE50",
-    "GAME2024",
-    "BONUS15",
-    "DISCOUNT25",
-    "PROMO40",
-    "SPECIAL35"
+    "КОФЕ1",
+    "КОФЕ2",
+    "КОФЕ3",
+    "КОФЕ4",
+    "КОФЕ5",
+    "КОФЕ6",
+    "КОФЕ7"
 ];
 
 class Game {
