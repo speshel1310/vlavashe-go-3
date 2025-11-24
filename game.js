@@ -990,7 +990,7 @@ class Game {
                 });
             }
 
-            if (this.resultMessageElement) this.resultMessageElement.textContent = "Чтобы результат попал в таблицу, сохраните его.";
+            if (this.resultMessageElement) this.resultMessageElement.textContent = "";
             if (this.bestScoreElement) this.bestScoreElement.textContent = "-";
 
         } else {
